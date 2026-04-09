@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+
+# Set number of days for synthetic data
+num_days = 1000
+np.random.seed(42)
+
+# Generate synthetic weather data
+data = {
+    "date": pd.date_range(start="2020-01-01", periods=num_days, freq="D"),
+    "temperature": np.random.uniform(10, 40, num_days),  # Celsius
+    "humidity": np.random.uniform(20, 90, num_days),  # Percentage
+    "wind_speed": np.random.uniform(0, 20, num_days),  # km/h
+    "pressure": np.random.uniform(900, 1100, num_days),  # hPa
+    "precipitation": np.random.uniform(0, 50, num_days),  # mm
+}
+
+df = pd.DataFrame(data)
+
+# Save dataset as CSV
+df.to_csv("synthetic_weather_data.csv", index=False)
+print("✅ Synthetic weather dataset created: 'synthetic_weather_data.csv'")
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+import joblib
+
+# Load dataset
+df = pd.read_csv("synthetic_weather_data.csv")
+
+# Define input features and target variable
+X = df[["humidity", "wind_speed", "pressure", "precipitation"]]
+y = df["temperature"]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Random Forest model
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Save the trained model
+joblib.dump(model, "weather_prediction_model.pkl")
+print("✅ Weather Prediction Model saved as 'weather_prediction_model.pkl'")
