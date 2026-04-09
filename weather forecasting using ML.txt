@@ -38,6 +38,23 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Train Random Forest model
 model = RandomForestRegressor(n_estimators=100, random_state=42)
+
+# Load the saved model
+model = joblib.load("weather_prediction_model.pkl")
+
+def predict_temperature(humidity, wind_speed, pressure, precipitation):
+    # Prepare input data
+    input_data = np.array([[humidity, wind_speed, pressure, precipitation]])
+
+    # Make prediction
+    predicted_temp = model.predict(input_data)[0]
+
+    # Display result
+    print(f"🌡️ Predicted Temperature: {predicted_temp:.2f}°C")
+
+# Example Prediction
+predict_temperature(65, 5, 1010, 10)
+
 model.fit(X_train, y_train)
 
 # Save the trained model
