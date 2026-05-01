@@ -53,7 +53,7 @@ def predict_temperature(humidity, wind_speed, pressure, precipitation):
     print(f"🌡️ Predicted Temperature: {predicted_temp:.2f}°C")
 
 # Example Prediction
-predict_temperature(65, 5, 1010, 10)
+predict_temperature(70, 5, 1010, 10)
 
 model.fit(X_train, y_train)
 
